@@ -15,4 +15,11 @@
 
 ---
 
+#### Tasks
+
+| Task      | Assigned  |
+|-----------|-------|
+| Create Github Repository  | Everyone  |
+| Brainstorm Project        | Everyone  |
+| Finding Dataset           | Everyone  |
 
