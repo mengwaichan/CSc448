@@ -1,1 +1,2 @@
-# CSc448
+# Team TESSA: Farhanul Thouship, Georgios Ioannou, Meng Wai Chan
+
