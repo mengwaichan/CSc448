@@ -23,3 +23,11 @@
 | Brainstorm Project        | Everyone  |
 | Finding Dataset           | Everyone  |
 | Data Modeling: Random forest  | Meng  |
+
+----
+
+#### Resources:
+**[Dataset](https://www.kaggle.com/datasets/pashupatigupta/emotion-detection-from-text/data)**
+    - 2 Columns, 40k rows
+    - Columns: sentiment, content
+    
