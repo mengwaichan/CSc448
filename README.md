@@ -22,4 +22,4 @@
 | Create Github Repository  | Everyone  |
 | Brainstorm Project        | Everyone  |
 | Finding Dataset           | Everyone  |
-
+| Data Modeling: Random forest  | Meng  |
