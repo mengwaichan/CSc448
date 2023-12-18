@@ -7,6 +7,7 @@
 - Matplotlib
 - Seaborn
 - Scikit-learn
+- NLTK
 
 ----
 
