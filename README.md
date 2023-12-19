@@ -23,8 +23,10 @@
 | Create Github Repository  | Everyone  |
 | Brainstorm Project        | Everyone  |
 | Finding Dataset           | Everyone  |
+| EDA                       | Meng      |
 | Data Preprocessing        | Everyone  |
 | Data Modeling: Random forest  | Meng  |
+| Model Evaluation |    |
 
 ----
 
