@@ -10,6 +10,7 @@
 - NLTK
 - TfidfVectorizer
 - Matplotlib
+- Tensorflow
 
 ----
 
