@@ -1,8 +1,10 @@
 ### Team TESSA: Farhanul Thouship, Georgios Ioannou, Meng Wai Chan
 ----
-#### Fianl Project
-Machine Learing Model is located in [code](/code),
+#### Final Project
+Machine Learing Model is located in [code](/code)
+
 Final Report is located in [documents](/documents)
+
 ----
 #### UI:
 https://csc448finalproject.streamlit.app/
