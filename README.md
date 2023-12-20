@@ -40,6 +40,8 @@
 | Data Modeling: BiLSTM, CNN, CNN+LSTM, MNB | Georgios  |
 | Model Evaluation |  Everyone  |
 
+Machine Learing Model is located in [code](CSc_448_Final_Project/code)
+Final Report is located in [documents](CSc_448_Final_Project/doucuments)
 ----
 #### Setup:
 1. Download and install [Anaconda](https://www.anaconda.com/download)
@@ -49,7 +51,7 @@
 ----
 #### UI:
 https://csc448finalproject.streamlit.app/
-
+----
 #### Resources:
 **[Dataset](https://www.kaggle.com/datasets/praveengovi/emotions-dataset-for-nlp)**
     - 2 Columns, 20k rows
