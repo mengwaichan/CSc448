@@ -14,8 +14,8 @@
 ----
 
 #### Model Used
-- BiLSTM
-- CNN
+- Bidirectional LSTM (BiLSTM)
+- Convolutional neural network (CNN)
 - CNN + LSTM
 - Decision Tree
 - Logistic Regression
