@@ -34,7 +34,7 @@
 | Data Preprocessing        | Everyone  |
 | Data Modeling: Random forest, Decision Tree | Meng  |
 | Data Modeling: Logistic Regression , SVM | Farhanul  |
-| Data Modeling: BiLSTM, CNN, CNN+LSTM, MNB | Meng  |
+| Data Modeling: BiLSTM, CNN, CNN+LSTM, MNB | Georgios  |
 | Model Evaluation |    |
 
 ----
