@@ -41,7 +41,7 @@
 | Model Evaluation |  Everyone  |
 
 Machine Learing Model is located in [code](/code)
-Final Report is located in [documents](/doucuments)
+Final Report is located in [documents](/documents)
 ----
 #### Setup:
 1. Download and install [Anaconda](https://www.anaconda.com/download)
