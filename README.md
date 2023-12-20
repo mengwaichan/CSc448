@@ -15,13 +15,13 @@
 
 #### Model Used
 - Bidirectional LSTM (BiLSTM)
-- Convolutional neural network (CNN)
-- CNN + LSTM
+- Convolutional Neural Network (CNN)
+- CNN - LSTM
 - Decision Tree
 - Logistic Regression
-- MNB
+- Multinomial Naive Bayes (MNB)
 - Random Forest
-- SVM
+- Support Vector Machine (SVM)
 
 ---
 
