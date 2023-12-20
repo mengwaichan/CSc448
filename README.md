@@ -31,7 +31,7 @@
 ----
 
 #### Resources:
-**[Dataset](https://www.kaggle.com/datasets/pashupatigupta/emotion-detection-from-text/data)**
-    - 2 Columns, 40k rows
-    - Columns: sentiment, content
+**[Dataset](https://www.kaggle.com/datasets/praveengovi/emotions-dataset-for-nlp)**
+    - 2 Columns, 20k rows
+    - Columns: content, sentiment
     
