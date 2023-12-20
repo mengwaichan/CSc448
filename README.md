@@ -35,7 +35,7 @@
 | Data Modeling: Random forest, Decision Tree | Meng  |
 | Data Modeling: Logistic Regression , SVM | Farhanul  |
 | Data Modeling: BiLSTM, CNN, CNN+LSTM, MNB | Georgios  |
-| Model Evaluation |    |
+| Model Evaluation |  Everyone  |
 
 ----
 #### Setup:
@@ -44,6 +44,8 @@
 3. MacOS users, open up terminal and type in `jupyter notebook`
 4. Window users, open up your Anaconda Power Shell, and type in `jupyter notebook`
 ----
+#### UI:
+https://csc448finalproject.streamlit.app/
 
 #### Resources:
 **[Dataset](https://www.kaggle.com/datasets/praveengovi/emotions-dataset-for-nlp)**
