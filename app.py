@@ -33,7 +33,7 @@ nltk.download("omw-1.4")
 tokenizer = joblib.load(open("./tokenizer/tokenizer.pickle", "rb"))
 label = joblib.load(open("./label_encoder/label_encoder.h5", "rb"))
 model = load_model("./neural_network_models/cnn_model.h5")
-
+##############################################################################################################
 emotions_emoji_dict = {
     "anger": "😠",
     "fear": "😨",
@@ -42,10 +42,10 @@ emotions_emoji_dict = {
     "sadness": "😞",
     "surprise": "😯",
 }
-
+##############################################################################################################
 stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
-
+##############################################################################################################
 
 # Cleaner class is responsible for cleaning the documents using its pipeline function.
 
@@ -131,14 +131,12 @@ class Cleaner:
         return input_string
 
 
+##############################################################################################################
+
 # Inference function for new user input.
 
 
 def cnn_inference(user_input):
-    # Print the user input.
-
-    print("user_input =", user_input)
-
     # Create an instance of the Cleaner class.
 
     cleaner = Cleaner()
@@ -146,10 +144,6 @@ def cnn_inference(user_input):
     # Call the pipeline function on the new user input.
 
     cleaned_user_input = cleaner.pipeline(user_input)
-
-    # Print the cleaned user input.
-
-    print("cleaned_user_input =", cleaned_user_input)
 
     # Convert cleaned_user_input into a sequence of integers.
 
@@ -159,15 +153,15 @@ def cnn_inference(user_input):
 
     cleaned_user_input = pad_sequences(cleaned_user_input, maxlen=256, truncating="pre")
 
+    model_output = model.predict([cleaned_user_input, cleaned_user_input])
+
     # Model predicts the predicted emotion for the cleaned_user_input.
 
-    output = label.inverse_transform(
-        np.argmax(model.predict([cleaned_user_input, cleaned_user_input]), axis=-1)
-    )[0]
+    output = label.inverse_transform(np.argmax(model_output, axis=-1))[0]
 
     # Calculate the probability of the predicted result.
 
-    probability = np.max(model.predict([cleaned_user_input, cleaned_user_input]))
+    probability = np.max(model_output)
 
     return output, probability
 
@@ -219,17 +213,19 @@ def main():
             submit_text = st.form_submit_button(label="Classify")
 
         if submit_text:
-            col1 = st.columns(1)
-
             prediction, probability = cnn_inference(user_input=user_input)
+            st.success("Prediction Found Below!")
+            emoji_icon = emotions_emoji_dict[prediction]
 
-            with col1:
-                st.success("Text submitted successfully!")
+            st.markdown(
+                f'<p style="text-align: center;">Predicted Emotion = {prediction.capitalize()}{emoji_icon}</p>',
+                unsafe_allow_html=True,
+            )
 
-                st.success("Prediction!")
-                emoji_icon = emotions_emoji_dict[prediction]
-                st.write("{}:{}".format(prediction, emoji_icon))
-                st.write("Confidence:{}".format(np.max(probability)))
+            st.markdown(
+                f'<p style="text-align: center;">Confidence = {np.max(probability)}</p>',
+                unsafe_allow_html=True,
+            )
 
     except Exception as e:
         st.error(e)
