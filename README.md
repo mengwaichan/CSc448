@@ -1,5 +1,9 @@
 ### Team TESSA: Farhanul Thouship, Georgios Ioannou, Meng Wai Chan
 ----
+#### Fianl Project
+Machine Learing Model is located in [code](/code),
+Final Report is located in [documents](/documents)
+----
 
 #### Libraries Used
 - Pandas
@@ -40,8 +44,6 @@
 | Data Modeling: BiLSTM, CNN, CNN+LSTM, MNB | Georgios  |
 | Model Evaluation |  Everyone  |
 
-Machine Learing Model is located in [code](/code)
-Final Report is located in [documents](/documents)
 ----
 #### Setup:
 1. Download and install [Anaconda](https://www.anaconda.com/download)
