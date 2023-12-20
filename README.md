@@ -1,6 +1,14 @@
 ### Team TESSA: Farhanul Thouship, Georgios Ioannou, Meng Wai Chan
 ----
+#### Fianl Project
+Machine Learing Model is located in [code](/code),
+Final Report is located in [documents](/documents)
+----
+#### UI:
+https://csc448finalproject.streamlit.app/
+![UI](code/Meng_Wai_Chan/UI.JPG)
 
+----
 #### Libraries Used
 - Pandas
 - NumPy
@@ -46,10 +54,8 @@
 2. Launch a jupyter notebook
 3. MacOS users, open up terminal and type in `jupyter notebook`
 4. Window users, open up your Anaconda Power Shell, and type in `jupyter notebook`
-----
-#### UI:
-https://csc448finalproject.streamlit.app/
 
+----
 #### Resources:
 **[Dataset](https://www.kaggle.com/datasets/praveengovi/emotions-dataset-for-nlp)**
     - 2 Columns, 20k rows
