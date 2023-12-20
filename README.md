@@ -9,6 +9,7 @@
 - Scikit-learn
 - NLTK
 - TfidfVectorizer
+- Matplotlib
 
 ----
 
