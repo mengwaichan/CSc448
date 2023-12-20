@@ -8,6 +8,7 @@
 - Seaborn
 - Scikit-learn
 - NLTK
+- TfidfVectorizer
 
 ----
 
