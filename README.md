@@ -12,7 +12,14 @@
 ----
 
 #### Model Used
+- BiLSTM
+- CNN
+- CNN + LSTM
+- Decision Tree
+- Logistic Regression
+- MNB
 - Random Forest
+- SVM
 
 ---
 
@@ -25,9 +32,17 @@
 | Finding Dataset           | Everyone  |
 | EDA                       | Everyone  |
 | Data Preprocessing        | Everyone  |
-| Data Modeling: Random forest  | Meng  |
+| Data Modeling: Random forest, Decision Tree | Meng  |
+| Data Modeling: Logistic Regression , SVM | Farhanul  |
+| Data Modeling: BiLSTM, CNN, CNN+LSTM, MNB | Meng  |
 | Model Evaluation |    |
 
+----
+#### Setup:
+1. Download and install [Anaconda](https://www.anaconda.com/download)
+2. Launch a jupyter notebook
+3. MacOS users, open up terminal and type in `jupyter notebook`
+4. Window users, open up your Anaconda Power Shell, and type in `jupyter notebook`
 ----
 
 #### Resources:
