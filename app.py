@@ -5,7 +5,9 @@
 #
 # Copyright © 2023 by TESSA
 ##############################################################################################################
-import joblib
+# Import libraries.
+
+import joblib  # To read our pretrained tokenizer and label encoder.
 import nltk  # Natural Language Processing.
 import numpy as np  # Data wrangling.
 import pandas as pd  # Data handling.
@@ -30,10 +32,16 @@ nltk.download("stopwords")
 nltk.download("wordnet")
 nltk.download("omw-1.4")
 ##############################################################################################################
+# Read our pretrained tokenizer.
+
 tokenizer = joblib.load(open("./tokenizer/tokenizer.pickle", "rb"))
+
+# Read our pretrained label encoder.
+
 label = joblib.load(open("./label_encoder/label_encoder.h5", "rb"))
-model = load_model("./neural_network_models/cnn_model.h5")
 ##############################################################################################################
+# Emotions emoji mapping dictionary for visualization purposes.
+
 emotions_emoji_dict = {
     "anger": "😠",
     "fear": "😨",
@@ -45,7 +53,6 @@ emotions_emoji_dict = {
 ##############################################################################################################
 stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
-##############################################################################################################
 
 # Cleaner class is responsible for cleaning the documents using its pipeline function.
 
@@ -136,7 +143,7 @@ class Cleaner:
 # Inference function for new user input.
 
 
-def cnn_inference(user_input):
+def inference(user_input, model, selected_model):
     # Create an instance of the Cleaner class.
 
     cleaner = Cleaner()
@@ -153,7 +160,12 @@ def cnn_inference(user_input):
 
     cleaned_user_input = pad_sequences(cleaned_user_input, maxlen=256, truncating="pre")
 
-    model_output = model.predict([cleaned_user_input, cleaned_user_input])
+    # Inference.
+
+    if selected_model == "CNN":
+        model_output = model.predict([cleaned_user_input, cleaned_user_input])
+    else:
+        model_output = model.predict(cleaned_user_input)
 
     # Model predicts the predicted emotion for the cleaned_user_input.
 
@@ -168,6 +180,8 @@ def cnn_inference(user_input):
 
 ##############################################################################################################
 # Function to apply local CSS.
+
+
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -182,27 +196,40 @@ def main():
         st.set_page_config(page_title="TESSA | 😠😨😂😍😞😯")
 
         # Load CSS.
+
         local_css("styles/style.css")
 
         # Title.
+
         title = f"""<h1 align="center" style="font-family: monospace; font-size: 2.1rem; margin-top: -6rem">
                     Text Emotion System Sentiment Analysis</h1>"""
         st.markdown(title, unsafe_allow_html=True)
 
         # Subtitle.
+
         title = f"""<h2 align="center" style="font-family: monospace; font-size: 2.3rem; margin-top: -2rem">
                     TESSA</h2>"""
         st.markdown(title, unsafe_allow_html=True)
 
         # Image.
+
         image = "./logo.png"
         st.image(image)
 
         # Margin between the image and the form.
+
         st.markdown(
             f'<p style="margin-top: 5rem; text-align: center;"></p>',
             unsafe_allow_html=True,
         )
+
+        # Add a dropdown menu for model selection.
+
+        selected_model = st.selectbox(
+            "Select Neural Network Model", ["BiLSTM", "CNN", "CNN+LSTM"]
+        )
+
+        # Form to get user input.
 
         with st.form(key="my_form", border=True):
             st.markdown(
@@ -212,21 +239,52 @@ def main():
             user_input = st.text_area("Type Here")
             submit_text = st.form_submit_button(label="Classify")
 
-        if submit_text:
-            prediction, probability = cnn_inference(user_input=user_input)
-            st.success("Prediction Found Below!")
-            emoji_icon = emotions_emoji_dict[prediction]
+        with st.spinner(text="Model Inference..."):
+            if submit_text:
+                # Load the selected model.
 
-            st.markdown(
-                f'<p style="text-align: center;">Predicted Emotion = {prediction.capitalize()}{emoji_icon}</p>',
-                unsafe_allow_html=True,
-            )
+                if selected_model == "BiLSTM":
+                    model_path = "./neural_network_models/bidirectional_lstm_model.h5"
+                elif selected_model == "CNN":
+                    model_path = "./neural_network_models/cnn_model.h5"
+                elif selected_model == "CNN+LSTM":
+                    model_path = "./neural_network_models/cnn_lstm_model.h5"
 
-            st.markdown(
-                f'<p style="text-align: center;">Confidence = {np.max(probability)}</p>',
-                unsafe_allow_html=True,
-            )
+                # Load the model.
 
+                model = load_model(model_path)
+
+                # Inference.
+
+                prediction, probability = inference(
+                    user_input=user_input, model=model, selected_model=selected_model
+                )
+
+                st.success("Prediction Found Below!")
+                emoji_icon = emotions_emoji_dict[prediction]
+
+                # Display selected neural network model.
+
+                st.markdown(
+                    f'<p style="text-align: center;">Selected Neural Network Model = {selected_model}</p>',
+                    unsafe_allow_html=True,
+                )
+
+                # Display predicted emotion.
+
+                st.markdown(
+                    f'<p style="text-align: center;">Predicted Emotion = {prediction.capitalize()}{emoji_icon}</p>',
+                    unsafe_allow_html=True,
+                )
+
+                # Display confidence score.
+
+                st.markdown(
+                    f'<p style="text-align: center;">Confidence = {np.max(probability)}</p>',
+                    unsafe_allow_html=True,
+                )
+
+                st.balloons()
     except Exception as e:
         st.error(e)
 
