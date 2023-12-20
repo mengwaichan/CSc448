@@ -5,10 +5,35 @@
 #
 # Copyright © 2023 by TESSA
 ##############################################################################################################
-import streamlit as st
-import numpy as np
+import joblib
+import nltk  # Natural Language Processing.
+import numpy as np  # Data wrangling.
+import pandas as pd  # Data handling.
+import re  # Regular expression operations.
+import streamlit as st  # Streamlit.
 
+from nltk.stem import (
+    WordNetLemmatizer,
+)  # Lemmatize using WordNet's built-in morphy function.
+from nltk.stem import (
+    PorterStemmer,
+)  # Remove morphological affixes from words, leaving only the word stem.
+from nltk.corpus import stopwords  # Remove stopwaords.
+from nltk import word_tokenize  # Tokenize.
+from nltk.corpus import wordnet
+from tensorflow.keras.models import load_model  # To load the model.
+from tensorflow.keras.preprocessing.sequence import (
+    pad_sequences,
+)  # Transformsa list of sequences into a 2D Numpy array.
+
+nltk.download("stopwords")
+nltk.download("wordnet")
+nltk.download("omw-1.4")
 ##############################################################################################################
+tokenizer = joblib.load(open("./tokenizer/tokenizer.pickle", "rb"))
+label = joblib.load(open("./label_encoder/label_encoder.h5", "rb"))
+model = load_model("./neural_network_models/cnn_model.h5")
+
 emotions_emoji_dict = {
     "anger": "😠",
     "fear": "😨",
@@ -17,6 +42,134 @@ emotions_emoji_dict = {
     "sadness": "😞",
     "surprise": "😯",
 }
+
+stop_words = set(stopwords.words("english"))
+lemmatizer = WordNetLemmatizer()
+
+
+# Cleaner class is responsible for cleaning the documents using its pipeline function.
+
+
+class Cleaner:
+    def __init__(self):
+        pass
+
+    # 1. Make a function that makes all text lowercase.
+
+    def make_lowercase(self, input_string):
+        input_string = input_string.split()
+        input_string = [y.lower() for y in input_string]
+        return " ".join(input_string)
+
+    # 2. Make a function that removes all stopwords.
+
+    def remove_stopwords(self, input_string):
+        input_string = [i for i in str(input_string).split() if i not in stop_words]
+        return " ".join(input_string)
+
+    # 3. Make a function that removes all numbers.
+
+    def remove_numbers(self, input_string):
+        input_string = "".join([i for i in input_string if not i.isdigit()])
+        return input_string
+
+    # 4. Make a function that removes all punctuation.
+
+    def remove_punctuation(self, input_string):
+        input_string = re.sub(
+            "[%s]" % re.escape("""!"#$%&'()*+,،-./:;<=>؟?@[\]^_`{|}~"""),
+            " ",
+            input_string,
+        )
+        input_string = input_string.replace(
+            "؛",
+            "",
+        )
+        input_string = re.sub("\s+", " ", input_string)
+        input_string = " ".join(input_string.split())
+        return input_string.strip()
+
+    # 5. Make a function that removes all urls.
+
+    def remove_urls(self, input_string):
+        url_pattern = re.compile(r"https?://\S+|www\.\S+")
+        return url_pattern.sub(r"", input_string)
+
+    # 6. Make a function for lemmatization.
+
+    def lemmatization(self, input_string):
+        lemmatizer = WordNetLemmatizer()
+        input_string = input_string.split()
+        input_string = [lemmatizer.lemmatize(y) for y in input_string]
+        return " ".join(input_string)
+
+    # 7. Make a function that breaks words into their stem words.
+
+    def stem_words(self, input_string):
+        porter = PorterStemmer()
+        words = word_tokenize(input_string)
+        valid_words = []
+
+        for word in words:
+            stemmed_word = porter.stem(word)
+            valid_words.append(stemmed_word)
+
+        input_string = " ".join(valid_words)
+
+        return input_string
+
+    # 8. Make a pipeline function that applies all the text processing functions you just built.
+
+    def pipeline(self, input_string):
+        input_string = self.make_lowercase(input_string)  # 1.
+        input_string = self.remove_stopwords(input_string)  # 2.
+        input_string = self.remove_numbers(input_string)  # 3.
+        input_string = self.remove_punctuation(input_string)  # 4.
+        input_string = self.remove_urls(input_string)  # 5.
+        input_string = self.lemmatization(input_string)  # 6.
+        # input_string = self.stem_words(input_string) # 7.
+        return input_string
+
+
+# Inference function for new user input.
+
+
+def cnn_inference(user_input):
+    # Print the user input.
+
+    print("user_input =", user_input)
+
+    # Create an instance of the Cleaner class.
+
+    cleaner = Cleaner()
+
+    # Call the pipeline function on the new user input.
+
+    cleaned_user_input = cleaner.pipeline(user_input)
+
+    # Print the cleaned user input.
+
+    print("cleaned_user_input =", cleaned_user_input)
+
+    # Convert cleaned_user_input into a sequence of integers.
+
+    cleaned_user_input = tokenizer.texts_to_sequences([cleaned_user_input])
+
+    # Pad the sequences to a length of 256.
+
+    cleaned_user_input = pad_sequences(cleaned_user_input, maxlen=256, truncating="pre")
+
+    # Model predicts the predicted emotion for the cleaned_user_input.
+
+    output = label.inverse_transform(
+        np.argmax(model.predict([cleaned_user_input, cleaned_user_input]), axis=-1)
+    )[0]
+
+    # Calculate the probability of the predicted result.
+
+    probability = np.max(model.predict([cleaned_user_input, cleaned_user_input]))
+
+    return output, probability
 
 
 ##############################################################################################################
@@ -62,8 +215,22 @@ def main():
                 "<style>label, .stTextInput { color: red; }</style>",
                 unsafe_allow_html=True,
             )
-            raw_text = st.text_area("Type Here")
+            user_input = st.text_area("Type Here")
             submit_text = st.form_submit_button(label="Classify")
+
+        if submit_text:
+            col1 = st.columns(1)
+
+            prediction, probability = cnn_inference(user_input=user_input)
+
+            with col1:
+                st.success("Text submitted successfully!")
+
+                st.success("Prediction!")
+                emoji_icon = emotions_emoji_dict[prediction]
+                st.write("{}:{}".format(prediction, emoji_icon))
+                st.write("Confidence:{}".format(np.max(probability)))
+
     except Exception as e:
         st.error(e)
 

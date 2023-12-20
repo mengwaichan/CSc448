@@ -1,2 +1,6 @@
+keras
+nltk
 numpy
+scikit-learn
 streamlit
+tensorflow-cpu
